@@ -1,3 +1,6 @@
+# v4.1
+- add support for notifications
+
 # v4.0
 - add configuration to include/exclude windows by application
 

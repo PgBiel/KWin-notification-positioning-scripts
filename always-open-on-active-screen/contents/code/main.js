@@ -1,22 +1,17 @@
 /*
-KWin Script Always Open on Active Screen
-(C) 2021 Natalie Clarius <natalie_clarius@yahoo.de>
+KWin Script Always Show Notifications on Active Screen
+(C) 2022 PgBiel
+Based on the works of Natalie Clarius <natalie_clarius@yahoo.de>
 GNU General Public License v3.0
 */
 
 // initialization
 const config = {
-  classList: readConfig("classList", "")
-    .toLowerCase()
-    .split("\n")
-    .map((s) => s.trim()),
-  allowMode: readConfig("allowMode", true),
-  denyMode: readConfig("denyMode", false),
   debugMode: readConfig("debugMode", true)
 };
 
   function debug(...args) {
-    if (config.debugMode) console.debug("alwaysopenonactivescreen:", ...args);
+    if (config.debugMode) console.debug("alwaysshownotifonactivescreen:", ...args);
   }
   debug("initializing");
 
@@ -29,9 +24,7 @@ workspace.clientAdded.connect(client => {
 
     // abort conditions
     if (!client // null
-        || (config.allowMode && !config.classList.includes(String(client.resourceClass))) // using allowmode and window class is not in list
-        || (config.denyMode && config.classList.includes(String(client.resourceClass)))  // using denymode and window class is in list
-        || !(client.resizeable && client.moveable && client.moveableAcrossScreens) // not regeomtrizable
+	|| !(client.notification || client.criticalNotification)  // not a notification
         || client.screen == activeScreen) // already on right screen
         return;
 
